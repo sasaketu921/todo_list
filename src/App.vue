@@ -35,7 +35,7 @@ export default {
   
   methods: {
     async getTodo() {
-      const resData = await axios.get("https://safe-depths-13271.herokuapp.com");
+      const resData = await axios.get("https://safe-depths-13271.herokuapp./api/test");
       this.todoLists = resData.data.data;
     },
 
@@ -43,7 +43,7 @@ export default {
       const sendData = {
         todo: this.newList
       }
-     await axios.post("https://safe-depths-13271.herokuapp.com", sendData);
+     await axios.post("https://safe-depths-13271.herokuapp./api/test", sendData);
      await this.getTodo();
      this.newList= null
     },
@@ -51,11 +51,11 @@ export default {
       const sendData = {
          todo:todo
       };
-      await axios.put("https://safe-depths-13271.herokuapp.com" + id, sendData);
+      await axios.put("https://safe-depths-13271.herokuapp./api/test" + id, sendData);
       await this.getTodo();
     },
     async deleteList(id) {
-      await axios.delete("https://safe-depths-13271.herokuapp.com" + id);
+      await axios.delete("https://safe-depths-13271.herokuapp./api/test" + id);
       await this.getTodo();
     },
   },
