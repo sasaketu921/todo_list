@@ -5,14 +5,16 @@
         <p class="title mb-15">Todo List</p>
         <div class="todo">
           <div class="add flex between">
-            <input class="input-add mb-15" type="text" v-model="newlist" >
-            <button class="btn-add" @click="doAdd">追加</button>
+            
+            <input class="input-add mb-15" type="text" name="todo" id="todo" v-model="newList" >
+            
+            <button class="btn-add" @click="insertTodo" >追加</button>
           </div>
-          <div class="list flex between mb-5" v-for="item of lists" :key="item.list">
-            <input class="input-update" type="text" :value="item.list"> 
+          <div class="list flex between mb-5" v-for="item in todoLists" :key="item.id">
+            <input class="input-update"  type="text" v-model="item.todo"> 
             <div>
-            <button class="btn-update">更新</button>
-            <button class="btn-delete">削除</button>
+            <button class="btn-update" @click="updateList(item.id, item.todo)">更新</button>
+            <button class="btn-delete" @click="deleteList(item.id)">削除</button>
             </div>
           </div>
         </div>
@@ -22,24 +24,45 @@
 </template>
 
 <script>
-// import axios from "axios"
+import axios from "axios";
 export default {
   data() {
     return {
-      lists: [
-        { list: ""}
-      ]
-      
+      newList: "",
+      todoLists: [],
     };
   },
   
   methods: {
-    doAdd: function() {
-      alert(this.newlist + "を追加します");
+    async getTodo() {
+      const resData = await axios.get("http://localhost:8000/api/test/");
+      this.todoLists = resData.data.data;
     },
 
-  }
-}
+    async insertTodo() {
+      const sendData = {
+        todo: this.newList
+      }
+     await axios.post("http://localhost:8000/api/test/", sendData);
+     await this.getTodo();
+     this.newList= null
+    },
+    async updateList(id, todo) {  
+      const sendData = {
+         todo:todo
+      };
+      await axios.put("http://localhost:8000/api/test/" + id, sendData);
+      await this.getTodo();
+    },
+    async deleteList(id) {
+      await axios.delete("http://localhost:8000/api/test/" + id);
+      await this.getTodo();
+    },
+  },
+  created() {
+    this.getTodo();
+  },
+};
 </script>
 
 
