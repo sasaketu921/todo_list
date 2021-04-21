@@ -51,11 +51,11 @@ export default {
       const sendData = {
          todo:todo
       };
-      await axios.put("https://safe-depths-13271.herokuapp.com/api/test" + id, sendData);
+      await axios.put("https://safe-depths-13271.herokuapp.com/api/test/" + id, sendData);
       await this.getTodo();
     },
     async deleteList(id) {
-      await axios.delete("https://safe-depths-13271.herokuapp.com/api/test" + id);
+      await axios.delete("https://safe-depths-13271.herokuapp.com/api/test/" + id);
       await this.getTodo();
     },
   },
